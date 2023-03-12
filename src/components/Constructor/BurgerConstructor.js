@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './BurgerConstructor.module.css';
 import PropTypes from 'prop-types';
-import Modal from '../modal/ModalSuccess';
+import ModalSuccess from '../modal/ModalSuccess';
 import {
     CurrencyIcon,
     Button,
@@ -31,14 +31,15 @@ BurgerConstructor.propTypes = {
 function BurgerConstructor({data}) {
     const [openModal,setOpenModal] = React.useState(false)
     const bun = data.filter((item) => item.type === "bun");
-    const ingridients = data.filter((item) => item.type !== "bun");
+    const ingredients = data.filter((item) => item.type !== "bun");
+
     function modal() {
         setOpenModal(true);
     }
     return (
         <div className={styles.container}>
-            <div className={styles.burgerComponents}>
-                <div className={styles.ingredient} >
+            <div style={{paddingRight:'30px'}}  className={styles.burgerComponents}>
+                <div style={{marginLeft:'22px'}} className={styles.ingredients} >
                     <ConstructorElement
                         type="top"
                         isLocked={true}
@@ -46,8 +47,8 @@ function BurgerConstructor({data}) {
                         price={bun[0].price}
                         thumbnail={bun[0].image}/>
                 </div>
-                {ingridients.map(item => (
-                    <div className={styles.ingredient} key={item.id}>
+                {ingredients.map(item => (
+                    <div  className={styles.ingredients} key={item._id}>
                         <div className={styles.wrap}>
                             <DragIcon type="primary"/>
                         </div>
@@ -59,7 +60,7 @@ function BurgerConstructor({data}) {
                         />
                     </div>
                     ))}
-                <div className={styles.ingredient}>
+                <div style={{marginLeft:'22px'}} className={styles.ingredients} >
                     <ConstructorElement
                         type="bottom"
                         isLocked={true}
@@ -76,7 +77,7 @@ function BurgerConstructor({data}) {
                     Оформить заказ
                 </Button>
             </div>
-            {openModal && <Modal closeModal={setOpenModal}/>}
+            {openModal && <ModalSuccess closeModal={setOpenModal}/>}
         </div>
     );
 }

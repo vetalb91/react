@@ -2,7 +2,7 @@
     position: absolute;
     width: 600px;
     height: 912px;
-    left: 1020px;
+    left: 51%;
     top: 128px;
 }
 .burgerComponents {
@@ -46,7 +46,14 @@
     order: 0;
     flex-grow: 0;
 }
-.ingredient {
+.ingredients {
+    display: flex;
+    flex-direction: row;
+    width: 568px;
+    height: 80px;
+    padding-left: 24px;
+}
+.ingredientslock {
     display: flex;
     flex-direction: row;
     width: 568px;
