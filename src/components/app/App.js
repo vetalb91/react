@@ -5,7 +5,7 @@ import BurgerIngredients  from '../ingridients/BurgerIngredients';
 import styles from './App.module.css';
 
 function App() {
-    const url = "https://norma.nomoreparties.space/api/ingredients";
+    const url = "https://norma.nomoreparties.space/api/ingredients1";
     const [state, setState] = React.useState({
         isLoading: false,
         hasError: false,
@@ -15,7 +15,12 @@ function App() {
     React.useEffect(() => {
         setState({ ...state, isLoading: true, hasError: false });
         fetch(url)
-            .then((res) => res.json())
+            .then(res => {
+                if (res.ok) {
+                    return res.json();
+                }
+                return Promise.reject(`Ошибка ${res.status}`);
+            })
             .then((json) =>
                 setState({
                     ...state,
@@ -24,7 +29,7 @@ function App() {
                     data: json.data,
                 })
             )
-            .catch((err) => setState({ ...state, isLoading: false, hasError: false }));
+            .catch((err) => setState({ ...state, isLoading: false, hasError: true }));
     }, []);
 
     const { data, isLoading, hasError } = state;

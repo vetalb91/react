@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './AppHeader.module.css';
-import User from './user/user';
+import User from './user/User';
 import {
     BurgerIcon,
     ProfileIcon,
