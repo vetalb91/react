@@ -25,7 +25,7 @@ BurgerIngredients.propTypes = {
 
 function BurgerIngredients ({data}){
     const bun = data.filter((item) => item.type === "bun");
-    const saus = data.filter((item) => item.type === "sauce");
+    const sauce = data.filter((item) => item.type === "sauce");
     const main = data.filter((item) => item.type === "main");
 
     return (
@@ -51,7 +51,7 @@ function BurgerIngredients ({data}){
                     <h2>Соусы</h2>
                 </div>
                 <div className={styles.columnsSaus}>
-                    {saus.map((item) => (
+                    {sauce.map((item) => (
                         <Product key={item._id} data={item}/>
                     ))}
                 </div>

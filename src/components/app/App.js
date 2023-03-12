@@ -5,7 +5,7 @@ import BurgerIngredients  from '../ingridients/BurgerIngredients';
 import styles from './App.module.css';
 
 function App() {
-    const url = "https://norma.nomoreparties.space/api/ingredients1";
+    const url = "https://norma.nomoreparties.space/api/ingredients";
     const [state, setState] = React.useState({
         isLoading: false,
         hasError: false,
