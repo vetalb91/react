@@ -1,8 +1,8 @@
 import React from 'react';
 import Header from '../header/AppHeader';
-import styles from './App.module.css';
 import BurgerConstructor from '../constructor/BurgerConstructor';
 import BurgerIngredients  from '../ingridients/BurgerIngredients';
+import styles from './App.module.css';
 
 function App() {
     const url = "https://norma.nomoreparties.space/api/ingredients";
@@ -24,7 +24,7 @@ function App() {
                     data: json.data,
                 })
             )
-            .catch((err) => setState({ ...state, isLoading: false, hasError: true }));
+            .catch((err) => setState({ ...state, isLoading: false, hasError: false }));
     }, []);
 
     const { data, isLoading, hasError } = state;
@@ -34,10 +34,10 @@ function App() {
               {isLoading && "Loading..."}
               {hasError && "error"}
               {!isLoading && !hasError && data.length && (
-                <>
+                <div className={styles.wrap}>
                     <BurgerConstructor data={state.data}/>
                     <BurgerIngredients data={state.data}/>
-                </>
+                </div>
               )}
           </div>
       );
