@@ -1,42 +1,26 @@
 import React from 'react';
 import styles from './AppHeader.module.css';
-import User from './user/User';
+import { NavLink } from './components/NavLink';
 import {
-    BurgerIcon,
-    ProfileIcon,
-    ListIcon,
     Logo,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
 function header(){
 
-        return (
-            <header className={styles.navbar}>
-               <div className={styles.content}>
-                   <div className={styles.unc1}>
-                      <div className={styles.nav01}>
-                          <ListIcon type={"primary"}/>
-                          <p className="text text_type_main-default text_color_inactive">
-                              Лента заказов
-                          </p>
-                      </div>
-                       <div className={styles.nav02}>
-                           <BurgerIcon type={"primary"}/>
-                           <div className="text text_type_main-default">Конструктор</div>
-                       </div>
-                   </div>
-                   <div className={styles.logo}>
-                       <Logo/>
-                   </div>
-                   <div className={styles.account}>
-                       <ProfileIcon type={styles.account}/>
-                       <div className="text text_type_main-default text_color_inactive">
-                           <User/>
-                       </div>
-                   </div>
-               </div>
-            </header>
-        );
+    return (
+        <header className={`${styles["header"]} text_type_main-default`}>
+            <nav className={`${styles["header-nav"]}`}>
+                <ul className={`${styles["header-list"]}`}>
+                    <li className={`${styles["item-left"]} mb-4 mt-4`}>
+                        <NavLink iconVariant={"constructor"} children="Конструктор" active/>
+                        <NavLink iconVariant={"orderFeed"} children="Лента заказов"/>
+                    </li>
+                    <li className={`${styles["header-logo"]}`}><Logo /></li>
+                    <li className={`${styles["item-right"]} mb-4 mt-4`}><NavLink iconVariant={"personalAccount"} children="Личный кабинет"/></li>
+                </ul>
+            </nav>
+        </header>
+    )
 
 }
 

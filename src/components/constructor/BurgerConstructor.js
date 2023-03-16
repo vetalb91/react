@@ -1,57 +1,45 @@
 import React from 'react';
 import styles from './BurgerConstructor.module.css';
+import { ingredientType } from '../../utils/types';
 import PropTypes from 'prop-types';
-import ModalSuccess from '../modal/ModalSuccess';
-import {
-    CurrencyIcon,
-    Button,
-    ConstructorElement,
-    DragIcon,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { DrugAndDrop } from './components/DragAndDropElement/DrugAndDrop';
+import { InfoAmount } from './components/InfoAmount/InfoAmount';
+import { Modal } from '../Modal/Modal';
+import { OrderDetails } from '../OrderDetails/OrderDetails';
+import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 
-const burgerPropTypes = PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    proteins: PropTypes.number.isRequired,
-    fat: PropTypes.number.isRequired,
-    carbohydrates: PropTypes.number.isRequired,
-    calories: PropTypes.number.isRequired,
-    price: PropTypes.number.isRequired,
-    image: PropTypes.string.isRequired,
-    image_mobile: PropTypes.string.isRequired,
-    image_large: PropTypes.string.isRequired,
-    __v: PropTypes.number.isRequired,
-}).isRequired;
 
-BurgerConstructor.propTypes = {
-    data: PropTypes.arrayOf(burgerPropTypes).isRequired
-};
-
-function BurgerConstructor({data}) {
-    const [openModal,setOpenModal] = React.useState(false)
+export const BurgerConstructor = ({data}) => {
+    const [isOpenModal,setIsOpenModal] = React.useState(false)
     const bun = data.filter((item) => item.type === "bun");
     const ingredients = data.filter((item) => item.type !== "bun");
 
-    function modal() {
-        setOpenModal(true);
+    const openModal = () => {
+        setIsOpenModal(true);
     }
+    const closeModal = () => {
+        setIsOpenModal(false)
+    }
+
     return (
-        <div className={styles.container}>
-            <div style={{paddingRight:'30px'}}  className={styles.burgerComponents}>
-                <div style={{marginLeft:'22px'}} className={styles.ingredients} >
-                    <ConstructorElement
+
+        <section className={`${styles["constructor-wrapper"]}`}>
+            {isOpenModal && <Modal onClose={closeModal}>
+                <OrderDetails />
+            </Modal>}
+            <div className={`${styles["constructor-wrapper"]} mt-25`}>
+                   <div className={`mr-2`}> <ConstructorElement
                         type="top"
                         isLocked={true}
                         text={`${bun[0].name} (верх)`}
                         price={bun[0].price}
                         thumbnail={bun[0].image}/>
-                </div>
+                   </div>
+                <div className={`${styles["ingredients-wrapper"]} custom-scroll`}>
                 {ingredients.map(item => (
-                    <div  className={styles.ingredients} key={item._id}>
-                        <div className={styles.wrap}>
-                            <DragIcon type="primary"/>
-                        </div>
+
+                    <div className={`${styles["item-wrapper"]}`}  key={item._id}>
+                        <DrugAndDrop />
                         <ConstructorElement
                             type={item.type}
                             text={item.name}
@@ -60,8 +48,9 @@ function BurgerConstructor({data}) {
                         />
                     </div>
                     ))}
-                <div style={{marginLeft:'22px'}} className={styles.ingredients} >
-                    <ConstructorElement
+                </div>
+                <div className={`mr-3`}>
+                <ConstructorElement
                         type="bottom"
                         isLocked={true}
                         text={`${bun[0].name} (низ)`}
@@ -69,16 +58,12 @@ function BurgerConstructor({data}) {
                         thumbnail={bun[0].image}
                     />
                 </div>
-            </div>
-            <div className={styles.info}>
-                <p className="text text_type_main-medium">610</p>
-                <CurrencyIcon type="primary" />
-                <Button htmlType="button" type="primary" size="large" onClick={modal}>
-                    Оформить заказ
-                </Button>
-            </div>
-            {openModal && <ModalSuccess closeModal={setOpenModal}/>}
+            <InfoAmount onClick={openModal}/>
         </div>
+        </section>
     );
-}
-export default BurgerConstructor
+};
+
+BurgerConstructor.propTypes = {
+    data: PropTypes.arrayOf(ingredientType).isRequired
+};

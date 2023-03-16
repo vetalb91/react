@@ -1,7 +1,7 @@
 import React from 'react';
-import Header from '../header/AppHeader';
-import BurgerConstructor from '../constructor/BurgerConstructor';
-import BurgerIngredients  from '../ingridients/BurgerIngredients';
+import Header from '../Header/AppHeader';
+import { BurgerConstructor } from '../Constructor/BurgerConstructor';
+import { BurgerIngredients }  from '../BurgerIngredients/BurgerIngredients';
 import styles from './App.module.css';
 
 function App() {
@@ -34,16 +34,18 @@ function App() {
 
     const { data, isLoading, hasError } = state;
       return (
-          <div className={styles.app}>
+          <div>
             <Header/>
+              <main className={styles.main}>
               {isLoading && "Loading..."}
               {hasError && "error"}
               {!isLoading && !hasError && data.length && (
-                <div className={styles.wrap}>
-                    <BurgerConstructor data={state.data}/>
-                    <BurgerIngredients data={state.data}/>
-                </div>
+                  <>
+                       <BurgerIngredients data={state.data}/>
+                       <BurgerConstructor data={state.data}/>
+                  </>
               )}
+              </main>
           </div>
       );
 }
