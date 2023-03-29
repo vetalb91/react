@@ -11,8 +11,10 @@ function App() {
         <div className={styles.app}>
             <AppHeader />
             <DndProvider backend={HTML5Backend}>
-                <BurgerConstructor />
-                <BurgerIngredients />
+                <main className={styles.main}>
+                    <BurgerIngredients />
+                    <BurgerConstructor />
+                </main>
             </DndProvider>
         </div>
     );

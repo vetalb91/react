@@ -1,4 +1,9 @@
-.app {
-    position: relative;
-    background: #131316;
+.main {
+    display: flex;
+    justify-content: center;
+
+
+}
+.app{
+
 }

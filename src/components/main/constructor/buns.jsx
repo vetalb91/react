@@ -16,8 +16,7 @@ export const Bun = ({ bun, handleDrag, pos, type }) => {
     });
     return (
         <div
-            className={`${styles.ingridient} `}
-            style={{ paddingLeft: "24px" }}
+            className={`${styles.ingridientBun} `}
             ref={dropTarget}
         >
             {bun ? (

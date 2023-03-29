@@ -71,7 +71,7 @@ const BurgerConstructor = () => {
             dispatch(postItems({ ingredients: total.ingredients }));
             setOpenModal(true);
         }
-    }, [dispatch, total.ingredients, openModal]);
+    }, [dispatch, total.ingredients]);
 
     const [, drop] = useDrop({
         accept: "items",
@@ -79,6 +79,10 @@ const BurgerConstructor = () => {
             items.type !== type_bun && ingredientDrag(items);
         },
     });
+
+    const disableOrderButton = useMemo(() => {
+        return ingredients.length === 0 || bun === null;
+    }, [ingredients, bun]);
 
     return (
         <section className={styles.container}>
@@ -102,15 +106,22 @@ const BurgerConstructor = () => {
                 )}
 
                 <Bun bun={bun} handleDrag={handleDrag} pos={"(низ)"} type={"bottom"} />
+                <div className={styles.info}>
+                    <p className="text text_type_main-medium">{total.totalPrice}</p>
+                    <CurrencyIcon type="primary" />
+                    <Button
+                        htmlType="button"
+                        type="primary"
+                        size="large"
+                        onClick={modal}
+                        disabled={disableOrderButton}
+                    >
+                        Оформить заказ
+                    </Button>
+                </div>
             </div>
 
-            <div className={styles.info}>
-                <p className="text text_type_main-medium">{total.totalPrice}</p>
-                <CurrencyIcon type="primary" />
-                <Button htmlType="button" type="primary" size="large" onClick={modal}>
-                    Оформить заказ
-                </Button>
-            </div>
+
             {openModal && isLoading && "Загрузка..."}
             {openModal && hasError && "что-то пошло не так"}
             {openModal && !isLoading && !hasError && order && (
