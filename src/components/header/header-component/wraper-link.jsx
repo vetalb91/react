@@ -3,10 +3,10 @@ import { BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer
 import styles from './wraper-link.module.css';
 
 export const HeaderLink = ({
-                        active,
-                        iconVariant,
-                        children
-                    }) => {
+                               active,
+                               iconVariant,
+                               children
+                           }) => {
 
     const iconSelection = (iconVariant) => {
         switch (iconVariant) {
