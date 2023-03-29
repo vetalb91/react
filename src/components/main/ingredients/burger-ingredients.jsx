@@ -62,10 +62,6 @@ export default function BurgerIngredients() {
 
         divIngredients.current.addEventListener("scroll", scrollHandler);
 
-        return () => {
-            // eslint-disable-next-line
-            divIngredients.current.removeEventListener("scroll", scrollHandler);
-        };
     }, [bunsRef, sausRef, mainRef]);
 
     return (
