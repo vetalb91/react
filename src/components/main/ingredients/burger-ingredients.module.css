@@ -1,0 +1,39 @@
+.container {
+    width: 600px;
+    height:400px;
+    background: #131316;
+}
+
+.title {
+    order: 0;
+    align-self: stretch;
+    height: 40px;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.ingridients {
+    composes: custom-scroll from global;
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    height: 450px;
+    overflow-y: scroll;
+}
+
+.headline {
+    align-self: stretch;
+    height: 30px;
+    margin-top: 40px;
+    margin-bottom: 24px;
+}
+
+.columns {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+    justify-content: space-between;
+}
+.tabFlex{
+    display: flex
+}
