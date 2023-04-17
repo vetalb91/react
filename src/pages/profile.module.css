@@ -1,0 +1,103 @@
+
+.edit {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 24px;
+    height: 286px;
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+}
+.input {
+    margin-bottom: 20px;
+}
+.parent{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 200px;
+    margin-left: 200px
+
+}
+.child1,
+.child2 {
+    margin: 10px; /* добавляем отступы между блоками */
+}
+.child1{
+    width: 400px;
+
+}
+.child2{
+    width: 300px;
+}
+center {
+    width: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 400vh; /* установим высоту для выравнивания по вертикали */
+}
+
+.navigation, .content {
+    position: relative;
+
+}
+
+.frame {
+    width: 320px;
+    height: 64px;
+    background: #131316;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+.text {
+    height: 64px;
+    bottom: 0px;
+    font-family: "JetBrains Mono";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 30px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: #f2f2f3;
+}
+
+.caption {
+    width: 249px;
+    color: #8585ad;
+    background: #131316;
+    margin-left: 10px;
+}
+
+.button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    padding: 0px;
+    width: 74px;
+    height: 56px;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+.back {
+    display: flex;
+    flex-direction: row;
+
+    align-items: center;
+
+    width: 74px;
+    height: 56px;
+    border-radius: 64px;
+    margin-left: 644px;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}

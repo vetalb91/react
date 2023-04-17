@@ -11,10 +11,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
 
-
-
 export const Ingredients = ({ data, index, moveCard }) => {
-
     const { name, price, image, uuid } = data;
 
     const ref = useRef(null);
@@ -79,7 +76,7 @@ export const Ingredients = ({ data, index, moveCard }) => {
 
     return (
         <section className={`${styles.ingridient}`} style={{ opacity }} ref={ref}>
-            <div className={styles.dragicon}>
+            <div className={`${styles.dragicon}`}>
                 <DragIcon />
             </div>
 
