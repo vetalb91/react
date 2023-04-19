@@ -1,101 +1,164 @@
-import React from "react";
-import { setCookie, deleteCookie } from "../cookie";
+import { setCookie, getCookie } from "../cookie";
 import {
-    loginRequest,
-    registerRequest,
-    getUserRequest,
-    logoutRequest,
-    reversUserRequest,
-} from "../burger-api";
-
-export const SET_USER = "SET_USER";
-export const SET_AUTH_CHECKED = "SET_AUTH_CHECKED";
-
-const setUserAction = (user) => {
-    return {
-        type: SET_USER,
-        payload: user,
-    };
-};
-
-export const registerUserAction = (form) => {
-    return async (dispatch) => {
-        const data = await registerRequest(form);
-        if (data.accessToken) {
-            const authToken = data.accessToken.split("Bearer ")[1];
-            setCookie("token", authToken);
-            localStorage.setItem("accessToken", data.accessToken);
-            localStorage.setItem("refreshToken", data.refreshToken);
-        }
-        dispatch(setUserAction(data.user));
-        dispatch({ type: SET_AUTH_CHECKED, payload: true });
-    };
-};
-export const signInAction = (form) => {
-    return async (dispatch) => {
-        const data = await loginRequest(form);
-        if (data.accessToken) {
-            const authToken = data.accessToken.split("Bearer ")[1];
-            setCookie("token", authToken);
-            localStorage.setItem("accessToken", data.accessToken);
-            localStorage.setItem("refreshToken", data.refreshToken);
-        }
-        dispatch(setUserAction(data.user));
-        dispatch({ type: SET_AUTH_CHECKED, payload: true });
-    };
-};
-
-export const getUserAction = () => {
-    return async (dispatch) => {
-        try {
-            const data = await getUserRequest();
-            if (data.success) {
-                dispatch(setUserAction(data.user));
-                dispatch({ type: SET_AUTH_CHECKED, payload: true });
-            }
-        } catch (error) {
-            localStorage.removeItem("accessToken");
-            localStorage.removeItem("refreshToken");
-            dispatch(setUserAction(null));
-        } finally {
-            dispatch({ type: SET_AUTH_CHECKED, payload: true });
-        }
-    };
-};
-export const reversUserAction = (form) => {
-    return async (dispatch) => {
-        try {
-            const data = await reversUserRequest(form);
-            if (data.success) {
-                dispatch(setUserAction(data.user));
-                dispatch({ type: SET_AUTH_CHECKED, payload: true });
-            }
-        } catch (error) {
-            localStorage.removeItem("accessToken");
-            localStorage.removeItem("refreshToken");
-            dispatch(setUserAction(null));
-        } finally {
-            dispatch({ type: SET_AUTH_CHECKED, payload: true });
-        }
-    };
-};
-
-export const signOutAction = () => {
-    return async (dispatch) => {
-        await logoutRequest();
-        dispatch(setUserAction(null));
-        deleteCookie("token");
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
-    };
-};
-
+    postToResetPassword,
+    login,
+    registerNewUser,
+    postEmailToGetCode,
+    getUser,
+    logOut,
+    changeUserData,
+} from "../../utils/funcs";
+export const GET_USER_SUCCESS = "GET_USER_SUCCESS";
+export const AUTH_CHECK = "AUTH_CHECK";
+export const AUTH_REQUEST = "AUTH_REQUEST";
+export const CHANGE_USER_DATA_SUCCESS = "CHANGE_USER_DATA_SUCCESS";
+export const CODE_TO_RESET_SUCCESS = "CODE_TO_RESET_SUCCESS";
+export const AUTH_FAILURE = "AUTH_FAILURE";
+export const REGISTRATION_SUCCESS = "REGISTRATION_SUCCESS";
+export const RESET_PASSWORD_SUCCESS = "RESET_PASSWORD_SUCCESS";
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
+//проверка токеа на валидность реализована в функции fetchWithRefresh в funcs
 export const checkUserAuth = () => {
-    return (dispatch) => {
-        if (localStorage.getItem("accessToken")) {
-            dispatch(getUserAction());
+    return function (dispatch) {
+        if (getCookie("accessToken")) {
+            dispatch({
+                type: AUTH_REQUEST,
+            });
+            getUser()
+                .then((res) => {
+                    if (res.success) {
+                        dispatch({ type: GET_USER_SUCCESS, payload: res.user });
+                    }
+                })
+                .catch((err) => {
+                    dispatch({
+                        type: AUTH_FAILURE,
+                        payload: err,
+                    });
+                })
+                .finally(dispatch({ type: AUTH_CHECK }));
         } else {
-            dispatch({ type: SET_AUTH_CHECKED, payload: true });
+            dispatch({ type: AUTH_CHECK });
         }
+    };
+};
+
+export const getCodeToResetPassword = (email, callback) => {
+    return function (dispatch) {
+        dispatch({ type: AUTH_REQUEST });
+        postEmailToGetCode(email)
+            .then((res) => {
+                if (res.success) {
+                    dispatch({ type: CODE_TO_RESET_SUCCESS });
+                    callback();
+                }
+            })
+            .catch((err) => {
+                dispatch({
+                    type: AUTH_FAILURE,
+                    payload: err,
+                });
+            });
+    };
+};
+
+export const registerNewUserAction = (inputData) => {
+    return function (dispatch) {
+        dispatch({ type: AUTH_REQUEST });
+        registerNewUser(inputData)
+            .then((res) => {
+                if (res.success) {
+                    localStorage.setItem("refreshToken", res.refreshToken);
+                    setCookie("accessToken", res.accessToken.split("Bearer")[1]);
+                    dispatch({ type: REGISTRATION_SUCCESS, payload: res.user });
+                }
+            })
+            .catch((err) => {
+                dispatch({
+                    type: AUTH_FAILURE,
+                    payload: err,
+                });
+            });
+    };
+};
+
+export const getRequestToResetPassword = (inputData, callback) => {
+    return function (dispatch) {
+        dispatch({ type: AUTH_REQUEST });
+        postToResetPassword(inputData)
+            .then((res) => {
+                if (res.success) {
+                    dispatch({
+                        type: RESET_PASSWORD_SUCCESS,
+                    });
+                    callback();
+                }
+            })
+            .catch((err) => {
+                dispatch({
+                    type: AUTH_FAILURE,
+                    payload: err,
+                });
+            });
+    };
+};
+
+export const loginAction = (inputData) => {
+    return function (dispatch) {
+        dispatch({ type: AUTH_REQUEST });
+        login(inputData)
+            .then((res) => {
+                if (res.success) {
+                    localStorage.setItem("refreshToken", res.refreshToken);
+                    setCookie("accessToken", res.accessToken.split("Bearer")[1]);
+                    dispatch({
+                        type: LOGIN_SUCCESS,
+                        payload: res.user,
+                    });
+                }
+            })
+            .catch((err) => {
+                dispatch({
+                    type: AUTH_FAILURE,
+                    payload: err,
+                });
+            });
+    };
+};
+
+export const logOutAction = () => {
+    return function (dispatch) {
+        dispatch({ type: AUTH_REQUEST });
+        logOut()
+            .then((res) => {
+                if (res.success) {
+                    dispatch({ type: LOGOUT_SUCCESS });
+                }
+            })
+            .catch((err) => {
+                dispatch({
+                    type: AUTH_FAILURE,
+                    payload: err,
+                });
+            });
+    };
+};
+
+export const changeUserDataAction = (data) => {
+    return function (dispatch) {
+        dispatch({ type: AUTH_REQUEST });
+        changeUserData(data)
+            .then((res) => {
+                if (res.success) {
+                    dispatch({ type: CHANGE_USER_DATA_SUCCESS, payload: res.user });
+                }
+            })
+            .catch((err) => {
+                dispatch({
+                    type: AUTH_FAILURE,
+                    payload: err,
+                });
+            });
     };
 };

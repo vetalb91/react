@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { resetPasswordRequest } from "../services/burger-api";
 import styles from "./reset-password.module.css";
@@ -15,7 +15,7 @@ export function ResetPassword() {
         navigate("/");
     }
 
-    const onClick = (e) => {
+    const onSubmit = (e) => {
         e.preventDefault();
         resetPasswordRequest(form)
             .then(() => {
@@ -37,6 +37,7 @@ export function ResetPassword() {
         <div className={styles.content}>
             <div className={styles.edit}>
                 <h1>Восстановление пароля</h1>
+                <form onSubmit={onSubmit}>
                 <PasswordInput
                     onChange={onChange}
                     value={form.password}
@@ -52,13 +53,13 @@ export function ResetPassword() {
                     placeholder="Введите код из письма"
                 />
                 <Button
-                    htmlType="button"
+                    htmlType="submit"
                     type="primary"
                     size="medium"
-                    onClick={onClick}
                 >
                     Сохранить
                 </Button>
+                </form>
             </div>
             <div className={styles.actions}>
                 <p>

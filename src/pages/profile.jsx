@@ -1,105 +1,156 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 
-import { signOutAction, reversUserAction } from "../services/actions/user";
+import { logOutAction, changeUserDataAction } from "../services/actions/user";
 import styles from "./profile.module.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
+import { authState } from "../utils/funcs";
+import { useLocation, Link } from "react-router-dom";
 import {
     Button,
     Input,
     PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
+
 export function ProfilePage() {
-    const [form, setValue] = useState({ name: "", email: "", password: "" });
+    const location = useLocation();
+    const state = useSelector(authState);
+    const { user } = state;
+
+    const INITIALINPUT = {
+        email: user?.email,
+        name: user?.name,
+        password: '',
+        isShowButon: false,
+    };
+    const [prevInput, setPrevInput] = useState(INITIALINPUT);
+    const [inputData, setInputData] = useState(INITIALINPUT);
     const dispatch = useDispatch();
 
-    const signOut = useCallback(
-        (e) => {
-            e.preventDefault();
-            dispatch(signOutAction());
-        },
-        [dispatch]
-    );
-    const { user } = useSelector((store) => ({ user: store.user.user }));
-    const test = () => {
-        console.log(user);
+
+    const logOut = (e) => {
+        e.preventDefault();
+        dispatch(logOutAction());
     };
-    const saveNewUser = useCallback(
-        (e) => {
-            e.preventDefault();
-            reversUserAction(form);
-        },
-        [form]
-    );
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+        dispatch(changeUserDataAction(inputData));
+        setInputData({
+            ...inputData,
+            isShowButon: false,
+        });
+    };
+
+    useEffect(() => {
+        setPrevInput({
+            ...INITIALINPUT,
+            email: user?.email,
+            name: user?.name,
+        });
+        // eslint-disable-next-line
+    }, [user]);
+
+    const onCancel = (e) => {
+        e.preventDefault();
+        setInputData({
+            ...prevInput,
+            isShowButon: false,
+        });
+    };
 
     const onChange = (e) => {
-        setValue({ ...form, [e.target.name]: e.target.value });
+        setInputData({
+            ...inputData,
+            [e.target.name]: e.target.value,
+            isShowButon: true,
+        });
     };
 
     return (
         <>
             <div className={styles.parent}>
-
-
                 <div className={styles.content}>
                     <div className={styles.child1}>
-                            <span className={styles.text} onClick={test}>
-                                Профиль
-                            </span>
-                            <span className={styles.text}>История заказов</span>
-                            <span className={styles.text} onClick={signOut}>
-                                Выход
-                            </span>
-                        </div>
-                        <div className={styles.caption}>
-                            <p>Здесь вы можете изменять свои персональные данные</p>
+                        <Link
+                            className={`${styles.a_link} text text_type_main-medium ${
+                                location.pathname === "/profile" ? styles.a_link_active : null
+                            }`}
+                        >
+                            Профиль{" "}
+                        </Link>
+                        <Link
+                            to={"orders "}
+                            className={`${styles.a_link} text text_type_main-medium text_color_inactive`}
+                        >
+                            История заказов
+                        </Link>
 
-                        </div>
+                        <Link
+                            to={"/"}
+                            onClick={logOut}
+                            className={`${styles.a_link} text text_type_main-medium text_color_inactive`}
+                        >
+                            Выход
+                        </Link>
                     </div>
-                    <div className={styles.child2}>
-                        <Input
-                            type={"text"}
-                            placeholder={"Имя"}
-                            onChange={onChange}
-                            icon="EditIcon"
-                            value={user.name}
-                            name={"name"}
-                            error={false}
-                            errorText={"Ошибка"}
-                            size={"default"}
-                            extraClass={styles.input}
-                        />
-                        <Input
-                            type={"text"}
-                            placeholder={"Логин"}
-                            onChange={onChange}
-                            icon="EditIcon"
-                            value={user.email}
-                            name={"email"}
-                            error={false}
-                            errorText={"Ошибка"}
-                            size={"default"}
-                            extraClass={styles.input}
-                        />{" "}
-                        <PasswordInput
-                            onChange={onChange}
-                            value={form.password}
-                            name={"password"}
-                            extraClass={styles.input}
-                            placeholder="Пароль"
-                            icon="EditIcon"
-                        />
-                        <div className={styles.button}>
-                            <div className={styles.back}>Отмена</div>
-                            <Button
-                                htmlType="button"
-                                type="primary"
-                                size="medium"
-                                onClick={saveNewUser}
-                            >
-                                Сохранить
-                            </Button>
-                        </div>
+                    <div className={styles.caption}>
+                        <p>Здесь вы можете изменять свои персональные данные</p>
+                    </div>
+                </div>
+                <div className={styles.child2}>
+                    <form onSubmit={onSubmit}>
+                    <Input
+                        type={"text"}
+                        placeholder={"Имя"}
+                        onChange={onChange}
+                        icon="EditIcon"
+                        value={inputData.name }
+                        name={"name"}
+                        error={false}
+                        errorText={"Ошибка"}
+                        size={"default"}
+                        extraClass={styles.input}
+                    />
+                    <Input
+                        type={"text"}
+                        placeholder={"Логин"}
+                        onChange={onChange}
+                        icon="EditIcon"
+                        value={inputData.email}
+                        name={"email"}
+                        error={false}
+                        errorText={"Ошибка"}
+                        size={"default"}
+                        extraClass={styles.input}
+                    />
+                    <PasswordInput
+                        onChange={onChange}
+                        value={inputData.password}
+                        name={"password"}
+                        icon="EditIcon"
+                    />
+                        {inputData.isShowButon ? (
+                            <>
+                                <div className={styles.divsave}>
+                                    <Button
+                                        htmlType="button"
+                                        type="secondary"
+                                        size="small"
+                                        onClick={onCancel}
+                                    >
+                                        Отмена
+                                    </Button>
+                                <Button htmlType="submit" type="primary" size="small">
+                                    Сохранить
+                                </Button>
+
+                                </div>
+                            </>
+                        ) : (
+                            <></>
+                        )}
+                    </form>
                     </div>
                 </div>
 

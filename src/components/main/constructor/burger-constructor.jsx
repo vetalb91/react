@@ -21,14 +21,11 @@ import {
     Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { OrderDetails } from "./order-details";
-import { useNavigate,useLocation} from "react-router-dom";
 
 const type_bun = "bun";
 
 const BurgerConstructor = () => {
     const dispatch = useDispatch();
-    const location = useLocation();
-    const navigate = useNavigate();
     const total = useSelector(totalPriceSelector);
     const handleDrag = (bun) => {
         dispatch({ type: ADD_BUN, item: { ...bun, uuid: uuid() } });
@@ -74,13 +71,9 @@ const BurgerConstructor = () => {
         setOpenModal(false);
     };
 
-    function modal(location) {
+    function modal() {
 
-        const isAuthenticated = !!localStorage.getItem('accessToken');
-
-        if (!isAuthenticated) {
-            navigate('/login');
-        } else if (total.ingredients && user) {
+      if (total.ingredients && user) {
             dispatch(postItems({ ingredients: total.ingredients }));
             setOpenModal(true);
         }
@@ -117,7 +110,7 @@ const BurgerConstructor = () => {
             <div className={styles.info}>
                 <p className="text text_type_main-medium">{total.totalPrice}</p>
                 <CurrencyIcon type="primary" />
-                <Button htmlType="button" type="primary" size="large" onClick={() => modal(location)}>
+                <Button htmlType="button" type="primary" size="large" onClick={() => modal()}>
                     Оформить заказ
                 </Button>
             </div>

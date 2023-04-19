@@ -41,6 +41,7 @@ export const getItemsRequest = async () => {
     return await fetch(url).then(checkResponse);
 };
 
+
 export const postItemsRequest = async (body) => {
     const url = "https://norma.nomoreparties.space/api/orders";
     return await fetch(url, {
@@ -65,7 +66,17 @@ export const loginRequest = async (form) => {
         redirect: "follow",
         referrerPolicy: "no-referrer",
         body: JSON.stringify(form),
-    }).then(checkResponse);
+    }).then((res) => {
+        if (res.ok) {
+            return res.json().then((data) => {
+                localStorage.setItem("accessToken", data.accessToken);
+                localStorage.setItem("refreshToken", data.refreshToken);
+                return data;
+            });
+        } else {
+            return res.json().then((err) => Promise.reject(err));
+        }
+    });
 };
 export const registerRequest = async (form) => {
     const url = "https://norma.nomoreparties.space/api/auth/register";
@@ -83,19 +94,16 @@ export const registerRequest = async (form) => {
     }).then(checkResponse);
 };
 
-export const getUserRequest = async () => {
+
+export const getUserRequest = async (data) => {
+    const fetchBody = JSON.stringify(data);
     const url = "https://norma.nomoreparties.space/api/auth/user";
     return await fetchWithRefresh(url, {
-        method: "GET",
-        mode: "cors",
-        cache: "no-cache",
-        credentials: "same-origin",
+        method: "POST",
         headers: {
-            "Content-Type": "application/json",
-            Authorization: localStorage.getItem("accessToken"),
+            "Content-Type": "application/json;charset=utf-8",
         },
-        redirect: "follow",
-        referrerPolicy: "no-referrer",
+        body: fetchBody,
     }).then(checkResponse);
 };
 export const reversUserRequest = async (form) => {

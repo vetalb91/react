@@ -4,7 +4,7 @@ import Person from "./header-component/person";
 import { Logo } from "@ya.praktikum/react-developer-burger-ui-components";
 import Create from "./header-component/create";
 import Order from "./header-component/order-feed";
-
+import { Link } from "react-router-dom";
 export const AppHeader = () => {
     return (
         <header className={styles.navbar}>
@@ -14,7 +14,9 @@ export const AppHeader = () => {
                     <Order />
                 </div>
                 <div className={styles.logo}>
-                    <Logo />
+                    <Link to={"/"}>
+                        <Logo />
+                    </Link>
                 </div>
                 <div className={styles.account}>
                     <Person />

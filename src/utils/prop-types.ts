@@ -29,3 +29,10 @@ export const uuidBurgerPropTypes = PropTypes.shape({
     image_mobile: PropTypes.string.isRequired,
     __v: PropTypes.number.isRequired,
 });
+
+export const orderDetailsPropTypes = PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    image: PropTypes.string.isRequired,
+    number:PropTypes.number.isRequired,
+    __v: PropTypes.number.isRequired,
+});

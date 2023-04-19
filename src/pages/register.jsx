@@ -1,7 +1,8 @@
 import React from "react";
-import { registerUserAction } from "../services/actions/user";
+import { registerNewUserAction } from "../services/actions/user";
 import styles from "./register.module.css";
-import { useDispatch } from "react-redux";
+import { useState } from "react";
+import { useDispatch,useSelector } from "react-redux";
 import {
     EmailInput,
     PasswordInput,
@@ -9,30 +10,30 @@ import {
     Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link } from "react-router-dom";
-
+import { authState } from "../utils/funcs";
 export const RegisterPage = () => {
+    const INITIALINPUT = { email: "", password: "", name: "" };
+    useSelector(authState);
     const dispatch = useDispatch();
-    const [value, setValue] = React.useState({
-        email: "",
-        password: "",
-        name: "",
-    });
-
-    function onClick() {
-        dispatch(registerUserAction(value));
-    }
+    const [inputData, setInputData] = useState(INITIALINPUT);
     const onChange = (e) => {
-        setValue({ ...value, [e.target.name]: e.target.value });
+        setInputData({ ...inputData, [e.target.name]: e.target.value });
+    };
+    const onSubmit = (e) => {
+        e.preventDefault();
+        dispatch(registerNewUserAction(inputData));
+        setInputData(INITIALINPUT);
     };
     return (
         <div className={styles.content}>
             <div className={styles.edit}>
                 <h1>Регистрация</h1>
+                <form onSubmit={onSubmit}>
                 <Input
                     type={"text"}
                     placeholder="Имя"
                     onChange={onChange}
-                    value={value.name}
+                    value={inputData.name}
                     name={"name"}
                     error={false}
                     errorText={"Ошибка"}
@@ -41,7 +42,7 @@ export const RegisterPage = () => {
                 />
                 <EmailInput
                     onChange={onChange}
-                    value={value.email}
+                    value={inputData.email}
                     name={"email"}
                     isIcon={false}
                     placeholder="E-mail"
@@ -49,19 +50,19 @@ export const RegisterPage = () => {
                 />
                 <PasswordInput
                     onChange={onChange}
-                    value={value.password}
+                    value={inputData.password}
                     name={"password"}
                     extraClass={styles.input}
                     placeholder="Пароль"
                 />
                 <Button
-                    htmlType="button"
+                    htmlType="submit"
                     type="primary"
                     size="medium"
-                    onClick={onClick}
                 >
                     Зарегистрироваться
                 </Button>
+                </form>
             </div>
             <div className={styles.actions}>
                 <p>

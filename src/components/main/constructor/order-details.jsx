@@ -1,5 +1,6 @@
 import styles from "./burger-constructor.module.css";
-
+import PropTypes from "prop-types";
+import { orderDetailsPropTypes } from "../../../utils/prop-types";
 export const OrderDetails = ({ image, number }) => {
     return (
         <>
@@ -18,4 +19,9 @@ export const OrderDetails = ({ image, number }) => {
             </div>
         </>
     );
+};
+OrderDetails.propTypes = {
+    orderDetails: orderDetailsPropTypes,
+    image: PropTypes.string.isRequired,
+    number:PropTypes.number.isRequired,
 };

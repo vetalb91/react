@@ -72,6 +72,8 @@ function App() {
                     path="/profile"
                     element={<OnlyAuth component={<ProfilePage />} />}
                 />
+
+
                 <Route path="*" element={<NotMatch404 />} />
             </Routes>
 

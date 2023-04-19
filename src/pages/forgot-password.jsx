@@ -9,7 +9,9 @@ import {
 
 export function ForgotPass() {
     const navigate = useNavigate();
-    const onClick = (e) => {
+
+
+    const onSubmit = (e) => {
         e.preventDefault();
         forgotPasswordRequest(form)
             .then(() => {
@@ -20,6 +22,7 @@ export function ForgotPass() {
                 setError(true);
             });
     };
+
     const { hasError, setError } = useState(false);
     const [form, setValue] = useState({ email: "" });
 
@@ -31,6 +34,7 @@ export function ForgotPass() {
         <div className={styles.content}>
             <div className={styles.edit}>
                 <h1>Восстановление пароля</h1>
+                <form onSubmit={onSubmit}>
                 <EmailInput
                     onChange={onChange}
                     value={form.email}
@@ -40,13 +44,12 @@ export function ForgotPass() {
                     extraClass={styles.input}
                 />
                 <Button
-                    htmlType="button"
+                    htmlType="submit"
                     type="primary"
-                    size="medium"
-                    onClick={onClick}
-                >
+                    size="medium">
                     Восстановить
                 </Button>
+                </form>
             </div>
             <div className={styles.actions}>
                 <p>

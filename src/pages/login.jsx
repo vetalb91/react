@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { getUserAction } from "../services/actions/user";
-import { signInAction } from "../services/actions/user";
+import { loginAction } from "../services/actions/user";
+import { authState } from "../utils/funcs";
 
 import styles from "./login.module.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,53 +12,47 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
 export function LoginPage() {
-    const dispatch = useDispatch();
-    const [form, setValue] = useState({ email: "", password: "" });
-
-    const onClick = useCallback(
-        (e) => {
-            e.preventDefault();
-            dispatch(signInAction(form));
-        },
-        [dispatch, form]
-    );
-
-    useEffect(() => {
-        dispatch(getUserAction());
-    }, []);
-    const { user } = useSelector((store) => ({ user: store.user.user }));
-
+    const INITIALINPUT = { email: "", password: "" };
+    const [inputData, setInputData] = useState(INITIALINPUT);
     const onChange = (e) => {
-        setValue({ ...form, [e.target.name]: e.target.value });
+        setInputData({ ...inputData, [e.target.name]: e.target.value });
+    };
+    const dispatch = useDispatch();
+    useSelector(authState);
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+        dispatch(loginAction(inputData));
     };
 
     return (
         <div className={styles.content}>
             <div className={styles.edit}>
                 <h1>Вход</h1>
-                <EmailInput
-                    onChange={onChange}
-                    value={form.email}
-                    name={"email"}
-                    isIcon={false}
-                    extraClass={styles.input}
-                    placeholder="E-mail"
-                />
-                <PasswordInput
-                    onChange={onChange}
-                    value={form.password}
-                    name={"password"}
-                    extraClass={styles.input}
-                    placeholder="Пароль"
-                />
-                <Button
-                    htmlType="button"
-                    type="primary"
-                    size="medium"
-                    onClick={onClick}
-                >
-                    Войти
-                </Button>
+                <form onSubmit={onSubmit}>
+                    <EmailInput
+                        onChange={onChange}
+                        value={inputData.email}
+                        name={"email"}
+                        isIcon={false}
+                        extraClass={styles.input}
+                        placeholder="E-mail"
+                    />
+                    <PasswordInput
+                        onChange={onChange}
+                        value={inputData.password}
+                        name={"password"}
+                        extraClass={styles.input}
+                        placeholder="Пароль"
+                    />
+                    <Button
+                        htmlType="submit"
+                        type="primary"
+                        size="medium"
+                    >
+                        Войти
+                    </Button>
+                </form>
             </div>
             <div className={styles.actions}>
                 <div>
