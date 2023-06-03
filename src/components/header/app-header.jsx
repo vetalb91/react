@@ -1,23 +1,27 @@
-import React from 'react';
-import { Logo } from '@ya.praktikum/react-developer-burger-ui-components';
-import styles from './app-header.module.css';
-import { HeaderLink } from './header-component/wraper-link';
-
-function AppHeader () {
+import React from "react";
+import styles from "./app-header.module.css";
+import Person from "./header-component/person";
+import { Logo } from "@ya.praktikum/react-developer-burger-ui-components";
+import Create from "./header-component/create";
+import Order from "./header-component/order-feed";
+import { Link } from "react-router-dom";
+export const AppHeader = () => {
     return (
-        <header className={`${styles["header"]} text_type_main-default`}>
-            <nav className={`${styles["header-nav"]}`}>
-                <ul className={`${styles["header-list"]}`}>
-                    <li className={`${styles["item-left"]} mb-4 mt-4`}>
-                        <HeaderLink iconVariant={"constructor"} children="Конструктор" active/>
-                        <HeaderLink iconVariant={"orderFeed"} children="Лента заказов"/>
-                    </li>
-                    <li className={`${styles["header-logo"]}`}><Logo /></li>
-                    <li className={`${styles["item-right"]} mb-4 mt-4`}><HeaderLink iconVariant={"personalAccount"} children="Личный кабинет"/></li>
-                </ul>
-            </nav>
+        <header className={styles.navbar}>
+            <div className={styles.content}>
+                <div className={styles.dblbl}>
+                    <Create />
+                    <Order />
+                </div>
+                <div className={styles.logo}>
+                    <Link to={"/"}>
+                        <Logo />
+                    </Link>
+                </div>
+                <div className={styles.account}>
+                    <Person />
+                </div>
+            </div>
         </header>
-    )
-}
-
-export default AppHeader;
+    );
+};

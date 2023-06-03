@@ -29,12 +29,19 @@
     height: 240px;
     align-self: center;
 }
-
+.divimages{
+    width: 100%;
+    height: 250px;
+    text-align: center;
+    align-items: center;
+    padding:20px;
+    margin-top: 40px;
+}
 .frame {
     align-self: center;
     text-align: center;
+    align-items: center;
     margin-top: 16px;
-    width: 520px;
     min-height: 30px;
 }
 .nutrition {
@@ -49,6 +56,11 @@
     width: 120px;
     height: 56px;
     text-align: center;
+}
+.imgd {
+    width: 100%;
+    text-align: center;
+    align-items: center;
 }
 .closep {
     margin-right: 10px;

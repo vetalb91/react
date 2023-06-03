@@ -2,6 +2,7 @@
 
     width: 600px;
     height:500px;
+    margin-top: 50px;
 }
 
 .burgerComponents {
@@ -13,9 +14,9 @@
     padding: 0px;
     gap: 16px;
     width: 570px;
-    height: 656px;
+    height: 389px;
     left: 16px;
-    margin-top: 107px;
+    margin-top: 140px;
     overflow-x: hidden;
     margin-left: 79px;
 }
@@ -125,7 +126,12 @@
     top: 60px;
     right: 40px;
 }
-
+.linkStyle {
+    text-decoration: none;
+    color: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+}
 .modalm {
     display: flex;
     justify-content: center;
