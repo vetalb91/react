@@ -1,12 +1,14 @@
 import { combineReducers } from "redux";
-import { cartReducer } from "./cart";
-import { checkoutReducer } from "./checkout";
-import { burgerReducer } from "./create-burger";
-import { authReducer } from "./user";
+import { burgerIngredientsReducer } from "./burgerIngredients";
+import { constructorModal } from "./constructorModal";
+import { constructorReducer } from "./burgerConstructor";
+import { totalPriceReducer } from "./totalPrice";
+import { authReducer } from "./auth";
 
 export const rootReducer = combineReducers({
-    cart: cartReducer,
-    create: burgerReducer,
-    checkout: checkoutReducer,
-    user: authReducer
+    ingredientsData: burgerIngredientsReducer,
+    constructorData: constructorReducer,
+    constructorModal: constructorModal,
+    totalPrice: totalPriceReducer,
+    auth: authReducer,
 });
