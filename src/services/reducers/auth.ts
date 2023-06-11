@@ -1,3 +1,4 @@
+import { User } from "../../types/commonTypes";
 import {
     CODE_TO_RESET_SUCCESS,
     REGISTRATION_SUCCESS,
@@ -9,16 +10,27 @@ import {
     CHANGE_USER_DATA_SUCCESS,
     AUTH_FAILURE,
     AUTH_REQUEST,
+    AuthActions,
 } from "../actions/auth";
 
-const initialState = {
+export interface authInitialState {
+    isAuthChecked: boolean;
+    isAuthRequest: boolean;
+    error: null | string;
+    user: any;
+}
+
+const initialState: authInitialState = {
     isAuthChecked: false,
     isAuthRequest: false,
     error: null,
     user: null,
 };
 
-export const authReducer = (state = initialState, action) => {
+export const authReducer = (
+    state = initialState,
+    action: AuthActions
+): authInitialState => {
     switch (action.type) {
         case AUTH_REQUEST: {
             return {
@@ -32,11 +44,9 @@ export const authReducer = (state = initialState, action) => {
         case REGISTRATION_SUCCESS: {
             return {
                 ...state,
-                isAuthRequest: false,
                 isAuthChecked: true,
-                user: action.payload,
+                isAuthRequest: false,
                 error: null,
-                isPasswordReset: false,
             };
         }
         case RESET_PASSWORD_SUCCESS: {
@@ -45,7 +55,6 @@ export const authReducer = (state = initialState, action) => {
                 isAuthChecked: true,
                 isAuthRequest: false,
                 error: null,
-                isPasswordReset: true,
             };
         }
         case CODE_TO_RESET_SUCCESS: {

@@ -1,11 +1,11 @@
 import styles from "./orderDetails.module.css";
 import doneImage from "../../images/done.svg";
-import { useSelector } from "react-redux";
+import { useSelector } from "../../hooks/redux-hooks";
 import { Loader } from "../loader/loader";
 import { EmptyOrderMessage } from "../emptyOrderMessage/emptyOrderMessage";
 import { totalPriceState } from "../../services/reducers/stateFuncs";
 
-export const OrderDetails: React.FC = () => {
+export const OrderDetails: React.FC = (): JSX.Element => {
     const { orderData, isOrderDataRequest, isEmptyOrder, error } =
         useSelector(totalPriceState);
     return (
