@@ -3,10 +3,10 @@ import { useSelector,useDispatch } from "../../hooks/redux-hooks";
 import { UserOrdersList } from "../../components/userOrdersList/userOrdersList";
 
 import {
-    disconnectWsAction,
     startWsProtectedWsAction,
-} from "../../services/actions/wsAction";
-import { getWs } from "../../services/reducers/stateFuncs";
+    disconnectWsAction,
+} from "../../services/actions/profile-feed";
+import { getProfileFeed } from "../../services/reducers/stateFuncs";
 
 export const OrderPage: React.FC = (): JSX.Element => {
     const dispatch = useDispatch();
@@ -17,6 +17,6 @@ export const OrderPage: React.FC = (): JSX.Element => {
         };
     }, [dispatch]);
 
-    const dataOrders = useSelector(getWs);
+    const dataOrders = useSelector(getProfileFeed);
     return <UserOrdersList {...dataOrders}></UserOrdersList>;
 };

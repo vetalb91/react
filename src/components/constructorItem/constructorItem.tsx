@@ -1,11 +1,12 @@
 import type { XYCoord } from "dnd-core";
+
 import {
     ConstructorElement,
     DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useRef } from "react";
 import update from "immutability-helper";
-import { useDrag, useDrop } from "react-dnd";
+import { useDrag, useDrop,DragSourceMonitor } from "react-dnd";
 import { useDispatch, useSelector } from "../../hooks/redux-hooks";
 import {
     deleteConstructorIngredientAction,
@@ -74,7 +75,7 @@ export const ConstructorItem: React.FC<ConstructorItemType> = ({
     const [{ isDragging }, drag] = useDrag({
         type: "constructorElement",
         item: { index },
-        collect: (monitor: any) => {
+        collect: (monitor: DragSourceMonitor) => {
             return {
                 isDragging: monitor.isDragging(),
             };

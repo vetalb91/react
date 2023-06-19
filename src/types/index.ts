@@ -8,6 +8,8 @@ import { orderDataActions } from "../services/actions/getOrderData";
 import { IgetOrderItem } from "../services/actions/order";
 import { TotalPriceActions } from "../services/actions/totalPrice";
 import { wsActionsType } from "../services/actions/wsAction";
+import { feedActionsType } from "../services/actions/feed";
+import { profileFeedActionsType } from "../services/actions/profile-feed";
 import { authInitialState } from "../services/reducers/auth";
 import { InitStateBurgerConstructor } from "../services/reducers/burgerConstructor";
 import { InitialIngredientsState } from "../services/reducers/burgerIngredients";
@@ -16,6 +18,8 @@ import { InitStateOrder } from "../services/reducers/order";
 import { InitStateOrderData } from "../services/reducers/orderDataReducer";
 import { InitStateTotalPrice } from "../services/reducers/totalPrice";
 import { InitWs } from "../services/reducers/wsReducer";
+import { Ifeed } from "../services/reducers/feed";
+import { IprofileFeed } from "../services/reducers/profile-feed";
 import store from "../services/store";
 export type TApplicationActions =
     | AuthActions
@@ -25,7 +29,9 @@ export type TApplicationActions =
     | TotalPriceActions
     | orderDataActions
     | IgetOrderItem
-    | wsActionsType;
+    | wsActionsType
+    | feedActionsType
+    | profileFeedActionsType;
 
 export type AppThunk<TReturn = void> = ActionCreator<
     ThunkAction<TReturn, RootState, unknown, TApplicationActions>
@@ -39,5 +45,7 @@ export type RootState = {
     auth: authInitialState;
     order: InitStateOrder;
     orderData: InitStateOrderData;
+    feed:Ifeed;
+    profileFeed:IprofileFeed;
     ws: InitWs;
 };

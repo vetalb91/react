@@ -1,19 +1,19 @@
 import { useMemo } from "react";
-import { InitWs } from "../../services/reducers/wsReducer";
+import { Ifeed } from "../../services/reducers/feed";
 import { OrderItem } from "../../types/commonTypes";
 import { OrderNumberColumn } from "../orderNumberColumn/orderNumberColumn";
 import styles from "./feedOrders.module.css";
 
-export const FeedOrders: React.FC<InitWs> = ({
-                                                 orders,
+export const FeedOrders: React.FC<Ifeed> = ({
+                                                 publicFeed,
                                                  totalToday,
                                                  total,
                                              }): JSX.Element => {
     const doneOrdersArray = useMemo(() => {
-        return orders.filter((item: OrderItem) => {
+        return publicFeed.filter((item: OrderItem) => {
             return item.status === "done";
         });
-    }, [orders]);
+    }, [publicFeed]);
 
     const getCountOfOrders = (arr: OrderItem[]) => {
         const tempArr = [...arr];
@@ -29,10 +29,10 @@ export const FeedOrders: React.FC<InitWs> = ({
     };
 
     const prepareOrdersArray = useMemo(() => {
-        return orders.filter((item: OrderItem) => {
+        return publicFeed.filter((item: OrderItem) => {
             return item.status !== "done";
         });
-    }, [orders]);
+    }, [publicFeed]);
     const columnDoneOrdersArray = getCountOfOrders(doneOrdersArray);
     const columnPrepareOrdersArray = getCountOfOrders(prepareOrdersArray);
 

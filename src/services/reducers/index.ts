@@ -7,6 +7,8 @@ import { authReducer } from "./auth";
 import { orderReducer } from "./order";
 import { orderDataRed } from "./orderDataReducer";
 import { wsReducer } from "./wsReducer";
+import { feedReducer } from "./feed";
+import { profileFeedReducer } from "./profile-feed";
 
 export const rootReducer = combineReducers({
     ingredientsData: burgerIngredientsReducer,
@@ -16,5 +18,7 @@ export const rootReducer = combineReducers({
     auth: authReducer,
     order: orderReducer,
     orderData: orderDataRed,
+    feed: feedReducer,
+    profileFeed: profileFeedReducer,
     ws: wsReducer,
 });

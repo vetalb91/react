@@ -1,26 +1,26 @@
+
 import {
     WS_CONNECTION_CLOSED,
     WS_CONNECTION_ERROR,
     WS_CONNECTION_SUCCESS,
     WS_GET_MESSAGE,
-
-} from "../actions/wsAction";
-export interface InitWs {
+} from "../actions/feed";
+export interface Ifeed {
     wsConnected: boolean;
-    orders: any;
+    publicFeed: any;
     total: null | number;
     totalToday: null | number;
     error: null;
 }
 const initialState = {
     wsConnected: false,
-    orders: [],
+    publicFeed: [],
     total: null,
     totalToday: null,
     error: null,
 };
 
-export const wsReducer = (state: InitWs = initialState, action: any) => {
+export const feedReducer = (state: Ifeed = initialState, action: any) => {
     switch (action.type) {
         case WS_CONNECTION_SUCCESS:
             return {
@@ -48,9 +48,8 @@ export const wsReducer = (state: InitWs = initialState, action: any) => {
 
             return {
                 ...state,
-                privateFeed: action.payload,
                 error: null,
-                orders: [...action.payload.orders],
+                publicFeed: [...action.payload.orders],
                 total: action.payload.total,
                 totalToday: action.payload.totalToday,
             };

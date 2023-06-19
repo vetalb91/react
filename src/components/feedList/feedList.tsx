@@ -1,10 +1,13 @@
-import { dataOrders, OrderItem } from "../../types/commonTypes";
+import { OrderItem } from "../../types/commonTypes";
 import { FeedItem } from "../feedItem/feedItem";
 import styles from "./feedList.module.css";
 
-export const FeedList: React.FC<dataOrders | any> = ({
-                                                         dataOrders,
-                                                     }): JSX.Element => {
+
+interface FeedListProps {
+    dataOrders: OrderItem[];
+}
+
+export const FeedList: React.FC<FeedListProps> = ({ dataOrders }): JSX.Element => {
     return (
         <section className={styles.feed_list_box}>
             <header className={`text text_type_main-large ${styles.feed_header}`}>

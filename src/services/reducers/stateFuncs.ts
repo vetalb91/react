@@ -11,6 +11,8 @@ const ingredientsDataState = (state: RootState) => state.ingredientsData;
 const getOrder = (state: RootState) => state.order;
 const getDataOrders = (state: RootState) => state.orderData;
 const getWs = (state: RootState) => state.ws;
+const getFeed = (state: RootState) => state.feed;
+const getProfileFeed = (state: RootState) => state.profileFeed;
 export {
     getIngredientsFromState,
     getConstructorData,
@@ -21,5 +23,7 @@ export {
     ingredientsDataState,
     getOrder,
     getDataOrders,
+    getFeed,
+    getProfileFeed,
     getWs,
 };

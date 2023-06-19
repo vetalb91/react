@@ -1,12 +1,12 @@
-import { InitWs } from "../../services/reducers/wsReducer";
+import { IprofileFeed } from "../../services/reducers/profile-feed";
 import { OrderItem } from "../../types/commonTypes";
 import { FeedItem } from "../feedItem/feedItem";
 import styles from "./userOrdersList.module.css";
 
-export const UserOrdersList: React.FC<InitWs> = ({ orders }): JSX.Element => {
+export const UserOrdersList: React.FC<IprofileFeed> = ({ privatFeed }): JSX.Element => {
     return (
         <div className={`custom-scroll ${styles.orders_list_wrap}`}>
-            {orders.map((item: OrderItem, index: number) => {
+            {privatFeed.map((item: OrderItem, index: number) => {
                 return (
                     <FeedItem
                         isUserOrderItem={true}

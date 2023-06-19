@@ -154,6 +154,14 @@ export interface OrderParams {
     currentStatus: string;
     dateString: string;
 }
+
+export interface OrderDetailsProps {
+    isNotModal: boolean;
+}
+
+export interface OrderNumberColumnProps {
+    array: OrderItem[];
+}
 export interface IsNotModal {
     isNotModal: boolean;
 }

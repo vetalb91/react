@@ -1,56 +1,54 @@
 import {
-    WS_CONNECTION_CLOSED,
-    WS_CONNECTION_ERROR,
-    WS_CONNECTION_SUCCESS,
-    WS_GET_MESSAGE,
-
-} from "../actions/wsAction";
-export interface InitWs {
+    WS_CONNECTION_PROFILE_FEED_CLOSED,
+    WS_CONNECTION_PROFILE_FEED_ERROR,
+    WS_CONNECTION_PROFILE_FEED_SUCCESS,
+    WS_GET_PROFILE_FEED_MESSAGE,
+} from "../actions/profile-feed";
+export interface IprofileFeed {
     wsConnected: boolean;
-    orders: any;
+    privatFeed: any;
     total: null | number;
     totalToday: null | number;
     error: null;
 }
 const initialState = {
     wsConnected: false,
-    orders: [],
+    privatFeed: [],
     total: null,
     totalToday: null,
     error: null,
 };
 
-export const wsReducer = (state: InitWs = initialState, action: any) => {
+export const profileFeedReducer = (state: IprofileFeed = initialState, action: any) => {
     switch (action.type) {
-        case WS_CONNECTION_SUCCESS:
+        case WS_CONNECTION_PROFILE_FEED_SUCCESS:
             return {
                 ...state,
                 wsConnected: true,
                 error: null,
             };
 
-        case WS_CONNECTION_ERROR:
+        case WS_CONNECTION_PROFILE_FEED_ERROR:
             return {
                 ...state,
                 error: action.payload,
                 wsConnected: false,
             };
 
-        case WS_CONNECTION_CLOSED:
+        case WS_CONNECTION_PROFILE_FEED_CLOSED:
             return {
                 ...state,
                 error: null,
                 wsConnected: false,
             };
 
-        case WS_GET_MESSAGE:
+        case WS_GET_PROFILE_FEED_MESSAGE:
             console.log(action.payload);
 
             return {
                 ...state,
-                privateFeed: action.payload,
                 error: null,
-                orders: [...action.payload.orders],
+                privatFeed: [...action.payload.orders],
                 total: action.payload.total,
                 totalToday: action.payload.totalToday,
             };

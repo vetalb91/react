@@ -9,7 +9,6 @@ export const WS_CONNECTION_CLOSED: "WS_CONNECTION_CLOSED" =
     "WS_CONNECTION_CLOSED";
 export const WS_GET_MESSAGE: "WS_GET_MESSAGE" = "WS_GET_MESSAGE";
 
-
 export interface IstartWsAction {
     type: typeof WS_CONNECTION_START;
     payload: string;
@@ -21,13 +20,10 @@ export interface IstartWsProtectedWsAction {
 export interface IdisconnectWsAction {
     type: typeof WS_CONNECTION_CLOSE;
 }
-
-
-export type wsActionsType =
+export type feedActionsType =
     | IstartWsAction
     | IstartWsProtectedWsAction
     | IdisconnectWsAction;
-
 
 export const startWsAction = (): IstartWsAction => {
     return { type: WS_CONNECTION_START, payload: "orders/all" };
@@ -40,6 +36,7 @@ export const startWsProtectedWsAction = (): IstartWsProtectedWsAction => {
         payload: `orders?token=${accessToken}`,
     };
 };
+
 export const disconnectWsAction = (): IdisconnectWsAction => ({
     type: WS_CONNECTION_CLOSE,
 });

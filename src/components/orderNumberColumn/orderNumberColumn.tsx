@@ -1,6 +1,8 @@
-import { OrderItem } from "../../types/commonTypes";
+import { OrderItem ,OrderNumberColumnProps } from "../../types/commonTypes";
 import styles from "./orderNumberColumn.module.css";
-export const OrderNumberColumn: React.FC<any> = ({ array }): JSX.Element => {
+
+
+export const OrderNumberColumn: React.FC<OrderNumberColumnProps> = ({ array }) => {
     return (
         <div className={styles.column_done_wrap}>
             {array.map((item: OrderItem, index: number) => {

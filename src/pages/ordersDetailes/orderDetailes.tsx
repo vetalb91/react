@@ -1,15 +1,17 @@
 import { useEffect, useMemo } from "react";
-import { useSelector,useDispatch } from "../../hooks/redux-hooks";
+import { useSelector, useDispatch } from "../../hooks/redux-hooks";
 import { useParams } from "react-router-dom";
 import { ErrorMessage } from "../../components/errorMessage/errorMessage";
 import { Loader } from "../../components/loader/loader";
 import { Order } from "../../components/order/order";
 import { getOrderData } from "../../services/actions/getOrderData";
 import { getDataOrders } from "../../services/reducers/stateFuncs";
-import { GetOrderDataWithToggleModal } from "../../types/commonTypes";
+import { GetOrderDataWithToggleModal,OrderDetailsProps } from "../../types/commonTypes";
 
-export const OrderDetailes: React.FC<any> = ({ isNotModal }): JSX.Element => {
-    const { number } = useParams();
+
+
+export const OrderDetailes: React.FC<OrderDetailsProps> = ({ isNotModal }) => {
+    const { number } = useParams<{ number: string }>();
     const dispatch = useDispatch();
     const { isLoadingOneData, error, orderData } = useSelector(getDataOrders);
 
@@ -17,17 +19,20 @@ export const OrderDetailes: React.FC<any> = ({ isNotModal }): JSX.Element => {
         dispatch(getOrderData(number));
     }, [dispatch, number]);
 
-    const arrOfIngredientsOrderWithToggleModal =
-        useMemo((): GetOrderDataWithToggleModal => {
+    const arrOfIngredientsOrderWithToggleModal = useMemo<GetOrderDataWithToggleModal>(
+        () => {
             return { ...orderData, isNotModal };
-        }, [orderData]);
+        },
+        [orderData, isNotModal]
+    );
 
     if (error) {
-        return <ErrorMessage error={error}></ErrorMessage>;
+        return <ErrorMessage error={error} />;
     }
+
     return isLoadingOneData ? (
-        <Loader></Loader>
+        <Loader />
     ) : (
-        <Order {...arrOfIngredientsOrderWithToggleModal}></Order>
+        <Order {...arrOfIngredientsOrderWithToggleModal} />
     );
 };

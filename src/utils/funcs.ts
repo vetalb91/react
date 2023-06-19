@@ -128,7 +128,7 @@ const registerNewUser = (data: InitialInputRegister) => {
     });
 };
 
-const refreshToken = () => {
+const refreshToken = (): Promise<Record<string, any>> => {
     const fetchBody = JSON.stringify({
         token: localStorage.getItem("refreshToken"),
     });

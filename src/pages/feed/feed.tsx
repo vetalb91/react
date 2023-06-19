@@ -5,8 +5,8 @@ import { useDispatch, useSelector } from "../../hooks/redux-hooks";
 import {
     disconnectWsAction,
     startWsAction,
-} from "../../services/actions/wsAction";
-import { getWs } from "../../services/reducers/stateFuncs";
+} from "../../services/actions/feed";
+import { getFeed } from "../../services/reducers/stateFuncs";
 import styles from "./feed.module.css";
 
 export const Feed: React.FC = (): JSX.Element => {
@@ -17,11 +17,11 @@ export const Feed: React.FC = (): JSX.Element => {
             dispatch(disconnectWsAction());
         };
     }, [dispatch]);
-    const dataOrders = useSelector(getWs);
+    const dataOrders = useSelector(getFeed);
 
     return (
         <div className={styles.content_container}>
-            <FeedList dataOrders={dataOrders.orders}></FeedList>
+            <FeedList dataOrders={dataOrders.publicFeed}></FeedList>
             <FeedOrders {...dataOrders}></FeedOrders>
         </div>
     );
