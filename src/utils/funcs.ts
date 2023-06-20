@@ -1,12 +1,21 @@
 import { setCookie, getCookie, deleteCookie } from "../cookie/cookie";
 import {
+    getIngredients,
+    getOrder,
+    GetOrderData,
+    IngredientCard,
+    IngredientCardWithCounter,
     IngredientCardWithId,
     InitialInputProfile,
     InitialInputRegister,
     InitialInputReset,
     InitialLoginPage,
+    OrderItemWithCounter,
+    OrderParams,
+    UserAuth,
 } from "../types/commonTypes";
 import {
+    BASE_URL,
     DATA_URL_INGREDIENTS,
     LOGIN_POINT,
     LOGOUT_POINT,
@@ -17,57 +26,59 @@ import {
     TOKEN_POINT,
     USER_POINT,
 } from "./const";
-// 1 раз объявляем базовый урл
-export const BASE_URL = "https://norma.nomoreparties.space/api/";
+
 
 // создаем функцию проверки ответа на `ok`
-const checkResponse = (res: Response) => {
-    if (res.ok) {
-        return res.json();
-    }
+function checkReponce<T>(res: Response): Promise<T> {
+    return res.ok
+        ? (res.json() as Promise<T>)
+        : (res.json() as Promise<Error>).then((err) => {
+            return Promise.reject(err);
+        });
+}
 
-    // не забываем выкидывать ошибку, чтобы она попала в `catch`
-    return Promise.reject(`Ошибка ${res.status}`);
-};
-
-// создаем функцию проверки на `success`
 const checkSuccess = (res: any) => {
     if (res && res.success) {
         return res;
     }
-    // не забываем выкидывать ошибку, чтобы она попала в `catch`
-    return Promise.reject(`Ответ не success: ${res}`);
+
+    return Promise.reject(res);
 };
 
-// фукнцию запроса с проверкой ответа и `success`
-// В вызов приходит `endpoint` и опции
-const request = (endpoint: string, options?: any) => {
-    // а также в ней базовый урл
+function request<T>(endpoint: string, options?: any): Promise<T> {
     return fetch(`${BASE_URL}${endpoint}`, options)
-        .then(checkResponse)
+        .then(checkReponce)
         .then(checkSuccess);
+}
+
+const getDataIng = () => {
+    return request<getIngredients>(DATA_URL_INGREDIENTS);
 };
 
-const getDataIng = (): Promise<Response> => {
-    return request(DATA_URL_INGREDIENTS);
+const getChoosenOrder = (number: number) => {
+    return request<GetOrderData>(`orders/${number}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json;charset=utf-8",
+        },
+    });
 };
 
 const getDataOrder = (arr: string[]) => {
     const fetchBody = JSON.stringify({
         ingredients: arr,
     });
-    return fetchWithRefresh(ORDER_POINT, {
+    return fetchWithRefresh<getOrder>(ORDER_POINT, {
         method: "POST",
         headers: {
             "Content-Type": "application/json;charset=utf-8",
-            // eslint-disable-next-line
             authorization: "Bearer" + " " + getCookie("accessToken")?.trim(), ///delete trim
         },
         body: fetchBody,
     });
 };
 
-const getPrice = (arr: IngredientCardWithId[]) => {
+const getPrice = (arr: IngredientCardWithId[]): number =>  {
     if (arr.length === 0) {
         return 0;
     } else {
@@ -85,9 +96,9 @@ const getPrice = (arr: IngredientCardWithId[]) => {
     }
 };
 
-const postEmailToGetCode = (email: string): Promise<Response> => {
+const postEmailToGetCode = (email: string) => {
     const fetchBody = JSON.stringify({ email });
-    return request(PASSWORD_RESET, {
+    return request<UserAuth["postEmailToReset"]>(PASSWORD_RESET, {
         method: "POST",
         headers: {
             "Content-Type": "application/json;charset=utf-8",
@@ -95,9 +106,9 @@ const postEmailToGetCode = (email: string): Promise<Response> => {
         body: fetchBody,
     });
 };
-const postToResetPassword = (data: InitialInputReset): Promise<Response> => {
+const postToResetPassword = (data: InitialInputReset) => {
     const fetchBody = JSON.stringify(data);
-    return request(SEND_CODE_TO_RESET, {
+    return request<UserAuth["resetPassword"]>(SEND_CODE_TO_RESET, {
         method: "POST",
         headers: {
             "Content-Type": "application/json;charset=utf-8",
@@ -106,9 +117,9 @@ const postToResetPassword = (data: InitialInputReset): Promise<Response> => {
     });
 };
 
-const registerNewUser = (data: InitialInputRegister): Promise<Response> => {
+const registerNewUser = (data: InitialInputRegister) => {
     const fetchBody = JSON.stringify(data);
-    return request(REGISTER_POINT, {
+    return request<UserAuth["getUserWithToken"]>(REGISTER_POINT, {
         method: "POST",
         headers: {
             "Content-Type": "application/json;charset=utf-8",
@@ -117,7 +128,7 @@ const registerNewUser = (data: InitialInputRegister): Promise<Response> => {
     });
 };
 
-const refreshToken = () => {
+const refreshToken = (): Promise<Record<string, any>> => {
     const fetchBody = JSON.stringify({
         token: localStorage.getItem("refreshToken"),
     });
@@ -140,7 +151,9 @@ export const fetchWithRefresh = async <T>(
         if (err.message === "jwt expired") {
             const refreshData = await refreshToken(); //обновляем токен
 
+            // @ts-ignore
             localStorage.setItem("refreshToken", refreshData.refreshToken);
+            // @ts-ignore
             setCookie("accessToken", "", refreshData.accessToken.split("Bearer")[1]);
             options = {
                 ...options,
@@ -156,19 +169,18 @@ export const fetchWithRefresh = async <T>(
         }
     }
 };
-const getUser = (): Promise<Response> => {
-    return fetchWithRefresh(USER_POINT, {
+const getUser = () => {
+    return fetchWithRefresh<UserAuth["getUser"]>(USER_POINT, {
         method: "GET",
         headers: {
             "Content-Type": "application/json;charset=utf-8",
-            // eslint-disable-next-line
             authorization: "Bearer" + " " + getCookie("accessToken")?.trim(), ///deleted trim
         },
     });
 };
-const login = (data: InitialLoginPage): Promise<Response> => {
+const login = (data: InitialLoginPage) => {
     const fetchBody = JSON.stringify(data);
-    return request(LOGIN_POINT, {
+    return request<UserAuth["getUserWithToken"]>(LOGIN_POINT, {
         method: "POST",
         headers: {
             "Content-Type": "application/json;charset=utf-8",
@@ -176,34 +188,97 @@ const login = (data: InitialLoginPage): Promise<Response> => {
         body: fetchBody,
     });
 };
-const logOut = (): Promise<Response> => {
+const logOut = () => {
     const refreshToken = { token: localStorage.getItem("refreshToken") };
     const accessToken = getCookie("accessToken")?.trim(); ///delete trim
     localStorage.removeItem("refreshToken");
     deleteCookie("accessToken");
     const fetchBody = JSON.stringify(refreshToken);
-    return request(LOGOUT_POINT, {
+    return request<UserAuth["logout"]>(LOGOUT_POINT, {
         method: "POST",
         headers: {
             "Content-Type": "application/json;charset=utf-8",
-            // eslint-disable-next-line
             authorization: "Bearer" + " " + accessToken,
         },
         body: fetchBody,
     });
 };
 
-const changeUserData = (data: InitialInputProfile): Promise<Response> => {
+
+const changeUserData = (data: InitialInputProfile) => {
     const fetchBody = JSON.stringify(data);
-    return fetchWithRefresh(USER_POINT, {
+    return fetchWithRefresh<UserAuth["getUser"]>(USER_POINT, {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json;charset=utf-8",
-            // eslint-disable-next-line
             authorization: "Bearer" + " " + getCookie("accessToken")?.trim(), ///deleted trim
         },
         body: fetchBody,
     });
+};
+
+const getIngredientsOrderWithCounter = (
+    arr1: Array<OrderItemWithCounter>,
+    arr2: IngredientCard[]
+): Array<IngredientCardWithCounter> => {
+    const reducerArr = arr1.reduce(
+        (summ: any, orderItemWithCounter: OrderItemWithCounter) => {
+            const orderItem = arr2.find((item: IngredientCard) => {
+                return item._id === orderItemWithCounter.item;
+            });
+            return [...summ, { ...orderItem, counter: orderItemWithCounter.count }];
+        },
+        []
+    );
+    return reducerArr;
+};
+
+const getOrderParams = (
+    createdAt: string,
+    status: string,
+    isOrder?: boolean
+): OrderParams => {
+    const dateOfOrder = new Date(createdAt);
+
+    const getDataOrderInMillis = dateOfOrder.getTime();
+    const howMathDayAfterCreatedOrder = Math.floor(
+        (new Date().getTime() - getDataOrderInMillis) / 86400000
+    );
+    const nameDay =
+        howMathDayAfterCreatedOrder === 0
+            ? "сегодня"
+            : howMathDayAfterCreatedOrder === 1
+                ? "вчера"
+                : howMathDayAfterCreatedOrder === 2
+                    ? "позавчера"
+                    : 2 < howMathDayAfterCreatedOrder && howMathDayAfterCreatedOrder <= 4
+                        ? `${howMathDayAfterCreatedOrder} дня назад`
+                        : howMathDayAfterCreatedOrder >= 4
+                            ? `${howMathDayAfterCreatedOrder} дней назад`
+                            : null;
+    const currentStatus =
+        status === "done"
+            ? "Выполнен"
+            : status === "created"
+                ? "Готовится"
+                : "Отменен";
+    const dateString = `${nameDay}, ${dateOfOrder.getHours()}:${dateOfOrder.getMinutes()} ${
+        isOrder ? "" : "i-GMT+3"
+    }`;
+    return { currentStatus: currentStatus, dateString: dateString };
+};
+
+const getIngredientsArrayFromOrder = (
+    arr1: Array<string>,
+    arr2: IngredientCard[]
+): IngredientCard[] => {
+    const reducerArr = arr1.reduce((summ: any, ingredientId: string) => {
+        const orderItem = arr2.find((item: IngredientCard) => {
+            return item._id === ingredientId;
+        });
+        return [...summ, orderItem];
+    }, []);
+    return reducerArr;
 };
 
 export {
@@ -218,4 +293,8 @@ export {
     getUser,
     logOut,
     changeUserData,
+    getIngredientsArrayFromOrder,
+    getOrderParams,
+    getChoosenOrder,
+    getIngredientsOrderWithCounter,
 };

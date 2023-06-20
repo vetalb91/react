@@ -1,15 +1,16 @@
 import type { XYCoord } from "dnd-core";
+
 import {
     ConstructorElement,
     DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useRef } from "react";
 import update from "immutability-helper";
-import { useDrag, useDrop } from "react-dnd";
-import { useDispatch, useSelector } from "react-redux";
+import { useDrag, useDrop,DragSourceMonitor } from "react-dnd";
+import { useDispatch, useSelector } from "../../hooks/redux-hooks";
 import {
-    DELETE_CONSTRUCTOR_INGREDIENT,
-    REORDER_INGREDIENT_LIST,
+    deleteConstructorIngredientAction,
+    reorderIngredientList,
 } from "../../services/actions/burgerConstructor";
 import styles from "./constructorItem.module.css";
 import { getConstructorData } from "../../services/reducers/stateFuncs";
@@ -39,10 +40,7 @@ export const ConstructorItem: React.FC<ConstructorItemType> = ({
                 [hoverIndex, 0, [...ingredients][dragIndex]],
             ],
         });
-        dispatch({
-            type: REORDER_INGREDIENT_LIST,
-            splisedList: splicedList,
-        });
+        dispatch(reorderIngredientList(splicedList));
     };
 
     const [, drop] = useDrop<DragItem, void>({
@@ -77,7 +75,7 @@ export const ConstructorItem: React.FC<ConstructorItemType> = ({
     const [{ isDragging }, drag] = useDrag({
         type: "constructorElement",
         item: { index },
-        collect: (monitor: any) => {
+        collect: (monitor: DragSourceMonitor) => {
             return {
                 isDragging: monitor.isDragging(),
             };
@@ -85,14 +83,12 @@ export const ConstructorItem: React.FC<ConstructorItemType> = ({
     });
 
     const deleteConstructorItem = (id: number): void => {
-        const filteredIngredients = ingredients.filter(
+        const filteredIngredients: IngredientCardWithId[] = ingredients.filter(
             (item: IngredientCardWithId) => item.itemId !== id
         );
-        dispatch({
-            type: DELETE_CONSTRUCTOR_INGREDIENT,
-            ingredients: filteredIngredients,
-        });
+        dispatch(deleteConstructorIngredientAction(filteredIngredients));
     };
+
 
     drag(drop(ref));
 
