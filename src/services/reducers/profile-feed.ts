@@ -6,14 +6,14 @@ import {
 } from "../actions/profile-feed";
 export interface IprofileFeed {
     wsConnected: boolean;
-    privatFeed: any;
+    orders: any;
     total: null | number;
     totalToday: null | number;
     error: null;
 }
 const initialState = {
     wsConnected: false,
-    privatFeed: [],
+    orders: [],
     total: null,
     totalToday: null,
     error: null,
@@ -48,7 +48,7 @@ export const profileFeedReducer = (state: IprofileFeed = initialState, action: a
             return {
                 ...state,
                 error: null,
-                privatFeed: [...action.payload.orders],
+                orders: [...action.payload.orders],
                 total: action.payload.total,
                 totalToday: action.payload.totalToday,
             };

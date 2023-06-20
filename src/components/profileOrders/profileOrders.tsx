@@ -5,15 +5,15 @@ import { OrderNumberColumn } from "../orderNumberColumn/orderNumberColumn";
 import styles from "./profileOrders.module.css";
 
 export const ProfileOrders: React.FC<IprofileFeed> = ({
-                                                          privatFeed,
+                                                          orders,
                                                 totalToday,
                                                 total,
                                             }): JSX.Element => {
     const doneOrdersArray = useMemo(() => {
-        return privatFeed.filter((item: OrderItem) => {
+        return orders.filter((item: OrderItem) => {
             return item.status === "done";
         });
-    }, [privatFeed]);
+    }, [orders]);
 
     const getCountOfOrders = (arr: OrderItem[]) => {
         const tempArr = [...arr];
@@ -29,10 +29,10 @@ export const ProfileOrders: React.FC<IprofileFeed> = ({
     };
 
     const prepareOrdersArray = useMemo(() => {
-        return privatFeed.filter((item: OrderItem) => {
+        return orders.filter((item: OrderItem) => {
             return item.status !== "done";
         });
-    }, [privatFeed]);
+    }, [orders]);
     const columnDoneOrdersArray = getCountOfOrders(doneOrdersArray);
     const columnPrepareOrdersArray = getCountOfOrders(prepareOrdersArray);
 
