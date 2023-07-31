@@ -25,17 +25,17 @@ export interface getOrderFailed {
 }
 
 export function getOrderSuccessAction(
-    responceData: GetOrderData
+    responseData: GetOrderData
 ): getOrderSuccess {
     return {
         type: GET_ORDER_DATA_SUCCESS,
-        payload: responceData,
+        payload: responseData,
     };
 }
-export function getOrderRequestAction(): getOrderRequest {
+export function getOrderDataRequestAction(): getOrderRequest {
     return { type: GET_ORDER_DATA_REQUEST };
 }
-export function getIngredientFailedAction(err: Error): getOrderFailed {
+export function getOrderDataFailedAction(err: Error): getOrderFailed {
     return {
         type: GET_ORDER_DATA_FAILED,
         payload: `Ошибка сервера, попробуйте еще ${err.message}`,
@@ -43,13 +43,13 @@ export function getIngredientFailedAction(err: Error): getOrderFailed {
 }
 export const getOrderData: AppThunk = (number: number) => {
     return function (dispatch: AppDispatch) {
-        dispatch(getOrderRequestAction());
+        dispatch(getOrderDataRequestAction());
         getChoosenOrder(number)
-            .then((responceData) => {
-                dispatch(getOrderSuccessAction(responceData));
+            .then((responseData) => {
+                dispatch(getOrderSuccessAction(responseData));
             })
             .catch((err: Error) => {
-                dispatch(getIngredientFailedAction(err));
+                dispatch(getOrderDataFailedAction(err));
             });
     };
 };

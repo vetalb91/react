@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { CloseModalType } from "../../types/commonTypes";
 
 export const ModalOverlay: React.FC<CloseModalType> = ({ closeModal }) => {
-    const keyResponce = (e: KeyboardEvent): void => {
+    const keyresponse = (e: KeyboardEvent): void => {
         e.preventDefault();
         e.stopPropagation();
         if (e.key === "Escape") {
@@ -11,10 +11,10 @@ export const ModalOverlay: React.FC<CloseModalType> = ({ closeModal }) => {
         }
     };
     useEffect(() => {
-        document.addEventListener("keydown", keyResponce);
+        document.addEventListener("keydown", keyresponse);
 
         return () => {
-            document.removeEventListener("keydown", keyResponce);
+            document.removeEventListener("keydown", keyresponse);
         };
     }, []);
 

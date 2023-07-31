@@ -13,7 +13,7 @@ export interface InitialIngredientsState {
     isDataIngredientsRequest: boolean;
     error: string;
 }
-const initialState: InitialIngredientsState = {
+export const initialState: InitialIngredientsState = {
     dataIngredients: [],
     viewItem: null,
     isDataIngredientsRequest: false,

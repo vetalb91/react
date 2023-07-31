@@ -11,7 +11,7 @@ export interface IprofileFeed {
     totalToday: null | number;
     error: null;
 }
-const initialState = {
+export const initialState = {
     wsConnected: false,
     orders: [],
     total: null,

@@ -20,7 +20,7 @@ export interface authInitialState {
     user: any;
 }
 
-const initialState: authInitialState = {
+export const initialState: authInitialState = {
     isAuthChecked: false,
     isAuthRequest: false,
     error: null,
@@ -46,6 +46,7 @@ export const authReducer = (
                 ...state,
                 isAuthChecked: true,
                 isAuthRequest: false,
+                user: action.payload,
                 error: null,
             };
         }
