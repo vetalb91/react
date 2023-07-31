@@ -25,11 +25,11 @@ export interface getOrderFailed {
 }
 
 export function getOrderSuccessAction(
-    responceData: GetOrderData
+    responseData: GetOrderData
 ): getOrderSuccess {
     return {
         type: GET_ORDER_DATA_SUCCESS,
-        payload: responceData,
+        payload: responseData,
     };
 }
 export function getOrderDataRequestAction(): getOrderRequest {
@@ -45,8 +45,8 @@ export const getOrderData: AppThunk = (number: number) => {
     return function (dispatch: AppDispatch) {
         dispatch(getOrderDataRequestAction());
         getChoosenOrder(number)
-            .then((responceData) => {
-                dispatch(getOrderSuccessAction(responceData));
+            .then((responseData) => {
+                dispatch(getOrderSuccessAction(responseData));
             })
             .catch((err: Error) => {
                 dispatch(getOrderDataFailedAction(err));

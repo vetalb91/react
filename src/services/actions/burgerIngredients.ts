@@ -47,11 +47,11 @@ export function getIngredientFailedAction(err: Error): GetIngredientFailed {
     };
 }
 export function getIngredientSuccessAction(
-    responceData: getIngredients
+    responseData: getIngredients
 ): GetIngredientSuccess {
     return {
         type: GET_INGREDIENTS_SUCCESS,
-        ingredients: responceData.data,
+        ingredients: responseData.data,
     };
 }
 
@@ -59,8 +59,8 @@ export const getIngredientsData: AppThunk = () => {
     return function (dispatch: AppDispatch) {
         dispatch(getIngredientRequestAction());
         getDataIng()
-            .then((responceData) => {
-                dispatch(getIngredientSuccessAction(responceData));
+            .then((responseData) => {
+                dispatch(getIngredientSuccessAction(responseData));
             })
             .catch((err) => {
                 dispatch(getIngredientFailedAction(err));

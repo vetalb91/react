@@ -89,17 +89,17 @@ export function authFailureAction(err: Error): AuthFailure {
     return { type: AUTH_FAILURE, payload: err.message };
 }
 export function loginSuccessAction(
-    responce: UserAuth["getUser"]
+    response: UserAuth["getUser"]
 ): LoginSuccess {
-    return { type: LOGIN_SUCCESS, payload: responce.user };
+    return { type: LOGIN_SUCCESS, payload: response.user };
 }
 export function resetPasswordSuccessAction(): ResetPasswordSuccess {
     return { type: RESET_PASSWORD_SUCCESS };
 }
 export function registrationSuccessAction(
-    responce: UserAuth["getUser"]
+    response: UserAuth["getUser"]
 ): RegistrationSuccess {
-    return { type: REGISTRATION_SUCCESS, payload: responce.user };
+    return { type: REGISTRATION_SUCCESS, payload: response.user };
 }
 export function postCodeToResetPasswordAction(): CodeToResetSuccess {
     return {

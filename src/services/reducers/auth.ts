@@ -46,6 +46,7 @@ export const authReducer = (
                 ...state,
                 isAuthChecked: true,
                 isAuthRequest: false,
+                user: action.payload,
                 error: null,
             };
         }

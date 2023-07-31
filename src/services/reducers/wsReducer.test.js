@@ -1,4 +1,4 @@
-import { mockSocketMiddlewareResponce } from "../../utils/const";
+import { mockSocketMiddlewareresponse } from "../../utils/const";
 import {
     WS_CONNECTION_SUCCESS,
     WS_CONNECTION_ERROR,
@@ -50,14 +50,15 @@ describe("test of reducer wsReducer", () => {
     test("action WS_GET_MESSAGE", () => {
         const expected = {
             ...initialState,
-            error: null,
-            orders: [...mockSocketMiddlewareResponce.orders],
-            total: mockSocketMiddlewareResponce.total,
-            totalToday: mockSocketMiddlewareResponce.totalToday,
+            wsConnected: false,
+            privateFeed:mockSocketMiddlewareresponse,
+            orders: mockSocketMiddlewareresponse.orders,
+            total: mockSocketMiddlewareresponse.total,
+            totalToday: mockSocketMiddlewareresponse.totalToday,
         };
         const received = wsReducer(initialState, {
             type: WS_GET_MESSAGE,
-            payload: mockSocketMiddlewareResponce,
+            payload: mockSocketMiddlewareresponse,
         });
         expect(received).toEqual(expected);
     });

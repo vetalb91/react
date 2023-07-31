@@ -1,7 +1,7 @@
 import {
     mockErrorFailure,
     mockNotBunError,
-    mockOrderDataResponce,
+    mockOrderDataresponse,
 } from "../../utils/const";
 import {
     notBunAction,
@@ -55,13 +55,13 @@ describe("test of reducer totalPrice", () => {
         const expected = {
             ...initialState,
             isOrderDataRequest: false,
-            orderData: mockOrderDataResponce.order.number,
+            orderData: mockOrderDataresponse.order.number,
             isEmptyOrder: false,
             error: null,
         };
         const received = totalPriceReducer(
             initialState,
-            getOrderSuccessAction(mockOrderDataResponce)
+            getOrderSuccessAction(mockOrderDataresponse)
         );
         expect(received).toEqual(expected);
     });

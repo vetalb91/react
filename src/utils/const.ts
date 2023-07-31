@@ -241,7 +241,7 @@ export const mockViewItemIngredient = {
     image_large: "https://code.s3.yandex.net/react/code/bun-01-large.png",
     __v: 0,
 };
-export const mockRegistrationSuccessResponce = {
+export const mockRegistrationSuccessresponse = {
     success: true,
     user: { email: "romanosov@mail.ru", name: "eee" },
     accessToken:
@@ -249,12 +249,12 @@ export const mockRegistrationSuccessResponce = {
     refreshToken:
         "f77eaa9fc3d58c354769714aba82e28ee0cc9a98021d7c16ab2fcfc0e28e69ec7ba32790a7d1ebef",
 };
-export const mockGetUserResponce = {
+export const mockGetUserresponse = {
     success: true,
     user: { email: "romanosov@mail.ru", name: "eee" },
 };
 
-export const mockLoginSuccessResponce = {
+export const mockLoginSuccessresponse = {
     success: true,
     accessToken:
         "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0M2RhYWZhNDVjNmYyMDAxYmU2YWUzZCIsImlhdCI6MTY5MDYyNzI5MywiZXhwIjoxNjkwNjI4NDkzfQ.dMw0lMwcAnRxCjGYB2tWx2otzLFvTmc7L4c9gCb4nEk",
@@ -266,12 +266,12 @@ export const mockLoginSuccessResponce = {
     },
 };
 
-export const mockChangeUserResponce = {
+export const mockChangeUserresponse = {
     success: true,
     user: { email: "romanosow@mail.ru", name: "ssss" },
 };
 export const mockNotBunError = "В бургере не может не быть булок";
-export const mockOrderDataResponce = {
+export const mockOrderDataresponse = {
     success: true,
     name: "Флюоресцентный бургер",
     order: {
@@ -306,7 +306,7 @@ export const mockOrderDataResponce = {
         price: 988,
     },
 };
-export const mockSocketMiddlewareResponce = {
+export const mockSocketMiddlewareresponse = {
     success: true,
     orders: [
         {

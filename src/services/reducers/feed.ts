@@ -12,7 +12,7 @@ export interface Ifeed {
     totalToday: null | number;
     error: null;
 }
-const initialState = {
+export const initialState = {
     wsConnected: false,
     publicFeed: [],
     total: null,

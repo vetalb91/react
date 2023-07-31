@@ -1,8 +1,8 @@
 import {
-    mockRegistrationSuccessResponce,
-    mockGetUserResponce,
-    mockLoginSuccessResponce,
-    mockChangeUserResponce,
+    mockRegistrationSuccessresponse,
+    mockGetUserresponse,
+    mockLoginSuccessresponse,
+    mockChangeUserresponse,
     mockErrorFailure,
 } from "../../utils/const";
 import {
@@ -45,12 +45,12 @@ describe("test for reducer of auth", () => {
             ...initialState,
             isAuthRequest: false,
             isAuthChecked: true,
-            user: mockRegistrationSuccessResponce.user,
+            user: mockRegistrationSuccessresponse.user,
             error: null,
         };
         const received = authReducer(
             initialState,
-            registrationSuccessAction(mockRegistrationSuccessResponce)
+            registrationSuccessAction(mockRegistrationSuccessresponse)
         );
         expect(received).toEqual(expected);
     });
@@ -79,12 +79,12 @@ describe("test for reducer of auth", () => {
             ...initialState,
             isAuthChecked: true,
             isAuthRequest: false,
-            user: mockGetUserResponce.user,
+            user: mockGetUserresponse.user,
             error: null,
         };
         const received = authReducer(
             initialState,
-            getUserSuccessAction(mockGetUserResponce)
+            getUserSuccessAction(mockGetUserresponse)
         );
         expect(received).toEqual(expected);
     });
@@ -93,12 +93,12 @@ describe("test for reducer of auth", () => {
             ...initialState,
             isAuthChecked: true,
             isAuthRequest: false,
-            user: mockLoginSuccessResponce.user,
+            user: mockLoginSuccessresponse.user,
             error: null,
         };
         const received = authReducer(
             initialState,
-            loginSuccessAction(mockLoginSuccessResponce)
+            loginSuccessAction(mockLoginSuccessresponse)
         );
         expect(received).toEqual(expected);
     });
@@ -116,12 +116,12 @@ describe("test for reducer of auth", () => {
         const expected = {
             ...initialState,
             isAuthRequest: false,
-            user: mockChangeUserResponce.user,
+            user: mockChangeUserresponse.user,
             error: null,
         };
         const received = authReducer(
             initialState,
-            changeUserAction(mockChangeUserResponce)
+            changeUserAction(mockChangeUserresponse)
         );
         expect(received).toEqual(expected);
     });

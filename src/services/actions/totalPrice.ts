@@ -34,8 +34,8 @@ export function getOrderFailedAction(err: Error): GetOrderFailed {
 export function getOrderRequestAction(): GetOrderRequest {
     return { type: GET_ORDER_REQUEST };
 }
-export function getOrderSuccessAction(responceData: getOrder): GetOrderSuccess {
-    return { type: GET_ORDER_SUCCESS, orderData: responceData.order.number };
+export function getOrderSuccessAction(responseData: getOrder): GetOrderSuccess {
+    return { type: GET_ORDER_SUCCESS, orderData: responseData.order.number };
 }
 export function notBunAction(): NotBun {
     return { type: NOT_BUN, payload: "В бургере не может не быть булок" };
@@ -49,8 +49,8 @@ export const getOrderNum: AppThunk = (arr: string[]) => {
         }
         dispatch(getOrderRequestAction());
         getDataOrder(arr)
-            .then((responceData) => {
-                dispatch(getOrderSuccessAction(responceData));
+            .then((responseData) => {
+                dispatch(getOrderSuccessAction(responseData));
                 dispatch(clearConstructorAction());
             })
             .catch((err) => {
